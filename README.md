@@ -6,7 +6,7 @@ React Material UI multi step form with basic form validation logic. inspired by 
 ![](https://github.com/awran5/react-material-ui-step-form/blob/master/react-material-ui-step-form.jpg)
 
 ### Dependencies
-* [Material-UI](https://material-ui.com/) v4.0.0
+* [Material-UI](https://material-ui.com/) v4.8.0
 * React version supports [Hooks](https://reactjs.org/docs/hooks-intro.html)
 
 <hr />
