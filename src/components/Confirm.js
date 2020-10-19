@@ -1,66 +1,75 @@
-import React, { Fragment } from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import Button from '@material-ui/core/Button'
+import React, { Fragment } from "react"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import Divider from "@material-ui/core/Divider"
+import Button from "@material-ui/core/Button"
 
 // Destructure props
-const Confirm = ({ handleNext, handleBack, values: { firstName, lastName, email, gender, date, phone, city } }) => {
-	return (
-		<Fragment>
-			<List disablePadding>
-				<ListItem>
-					<ListItemText primary="First Name" secondary={firstName} />
-				</ListItem>
+const Confirm = ({ handleNext, handleBack, values }) => {
+  const { firstName, lastName, email, gender, date, phone, city } = values
 
-				<Divider />
+  const handleSubmit = () => {
+    // Do whatever with the values
+    console.log(values)
+    // Show last compinent or success message
+    handleNext()
+  }
 
-				<ListItem>
-					<ListItemText primary="Last Name" secondary={lastName} />
-				</ListItem>
+  return (
+    <Fragment>
+      <List disablePadding>
+        <ListItem>
+          <ListItemText primary="First Name" secondary={firstName} />
+        </ListItem>
 
-				<Divider />
+        <Divider />
 
-				<ListItem>
-					<ListItemText primary="Email Address" secondary={email} />
-				</ListItem>
+        <ListItem>
+          <ListItemText primary="Last Name" secondary={lastName} />
+        </ListItem>
 
-				<Divider />
+        <Divider />
 
-				<ListItem>
-					<ListItemText primary="Gender" secondary={gender} />
-				</ListItem>
+        <ListItem>
+          <ListItemText primary="Email Address" secondary={email} />
+        </ListItem>
 
-				<Divider />
+        <Divider />
 
-				<ListItem>
-					<ListItemText primary="Date of birth" secondary={date} />
-				</ListItem>
+        <ListItem>
+          <ListItemText primary="Gender" secondary={gender} />
+        </ListItem>
 
-				<Divider />
+        <Divider />
 
-				<ListItem>
-					<ListItemText primary="City" secondary={city} />
-				</ListItem>
+        <ListItem>
+          <ListItemText primary="Date of birth" secondary={date} />
+        </ListItem>
 
-				<Divider />
+        <Divider />
 
-				<ListItem>
-					<ListItemText primary="phone" secondary={phone.length > 0 ? phone : 'Not Provided'} />
-				</ListItem>
-			</List>
+        <ListItem>
+          <ListItemText primary="City" secondary={city} />
+        </ListItem>
 
-			<div style={{ display: 'flex', marginTop: 50, justifyContent: 'flex-end' }}>
-				<Button variant="contained" color="default" onClick={handleBack}>
-					Back
-				</Button>
-				<Button style={{ marginLeft: 20 }} variant="contained" color="secondary" onClick={handleNext}>
-					Confirm & Continue
-				</Button>
-			</div>
-		</Fragment>
-	)
+        <Divider />
+
+        <ListItem>
+          <ListItemText primary="phone" secondary={phone.length > 0 ? phone : "Not Provided"} />
+        </ListItem>
+      </List>
+
+      <div style={{ display: "flex", marginTop: 50, justifyContent: "flex-end" }}>
+        <Button variant="contained" color="default" onClick={handleBack}>
+          Back
+        </Button>
+        <Button style={{ marginLeft: 10 }} variant="contained" color="secondary" onClick={handleSubmit}>
+          Confirm & Continue
+        </Button>
+      </div>
+    </Fragment>
+  )
 }
 
 export default Confirm

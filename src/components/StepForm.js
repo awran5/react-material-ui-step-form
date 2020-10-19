@@ -1,129 +1,138 @@
-import React, { useState, Fragment } from 'react'
-import Stepper from '@material-ui/core/Stepper'
-import Step from '@material-ui/core/Step'
-import StepLabel from '@material-ui/core/StepLabel'
-import FirstStep from './FirstStep'
-import SecondStep from './SecondStep'
-import Confirm from './Confirm'
-import Success from './Success'
+import React, { useState } from "react"
+import Box from "@material-ui/core/Box"
+import Typography from "@material-ui/core/Typography"
+import Stepper from "@material-ui/core/Stepper"
+import Step from "@material-ui/core/Step"
+import StepLabel from "@material-ui/core/StepLabel"
+import FirstStep from "./FirstStep"
+import SecondStep from "./SecondStep"
+import Confirm from "./Confirm"
+import Success from "./Success"
+import formValidation from "../Helper/formValidation"
 
-const emailRegex = RegExp(/^[^@]+@[^@]+\.[^@]+$/)
-const phoneRegex = RegExp(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/)
 // Step titles
-const labels = [ 'First Step', 'Second Step', 'Confirmation' ]
+const labels = ["First Step", "Second Step", "Confirmation"]
+
+const initialValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  gender: "",
+  date: "",
+  city: "",
+  phone: ""
+}
+
+const fieldsValidation = {
+  firstName: {
+    error: "",
+    validate: "text",
+    minLength: 2,
+    maxLength: 20
+  },
+  lastName: {
+    error: "",
+    validate: "text",
+    minLength: 2,
+    maxLength: 20
+  },
+  email: {
+    error: "",
+    validate: "email"
+  },
+  gender: {},
+  date: {},
+  city: {
+    error: "",
+    validate: "text",
+    minLength: 3,
+    maxLength: 20
+  },
+  phone: {
+    error: "",
+    validate: "phone",
+    maxLength: 15
+  }
+}
 
 const StepForm = () => {
-	const [ steps, setSteps ] = useState(0)
-	const [ fields, setFields ] = useState({
-		firstName: '',
-		lastName: '',
-		email: '',
-		gender: '',
-		date: '',
-		city: '',
-		phone: ''
-	})
-	// Copy fields as they all have the same name
-	const [ filedError, setFieldError ] = useState({
-		...fields
-	})
+  const [activeStep, setActiveStep] = useState(0)
+  const [formValues, setFormValues] = useState(initialValues)
+  const [formErrors, setFormErrors] = useState({})
 
-	const [ isError, setIsError ] = useState(false)
+  // Proceed to next step
+  const handleNext = () => setActiveStep(prev => prev + 1)
+  // Go back to prev step
+  const handleBack = () => setActiveStep(prev => prev - 1)
 
-	// Proceed to next step
-	const handleNext = () => setSteps(steps + 1)
-	// Go back to prev step
-	const handleBack = () => setSteps(steps - 1)
+  // Handle form change
+  const handleChange = e => {
+    const { name, value } = e.target
 
-	// Handle fields change
-	const handleChange = input => ({ target: { value } }) => {
-		// Set values to the fields
-		setFields({
-			...fields,
-			[input]: value
-		})
+    // Set values
+    setFormValues(prev => ({
+      ...prev,
+      [name]: value
+    }))
 
-		// Handle errors
-		const formErrors = { ...filedError }
-		const lengthValidate = value.length > 0 && value.length < 3
+    // set errors
+    const error = formValidation(name, value, fieldsValidation) || ""
 
-		switch (input) {
-			case 'firstName':
-				formErrors.firstName = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			case 'lastName':
-				formErrors.lastName = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			case 'email':
-				formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address'
-				break
-			case 'phone':
-				formErrors.phone = phoneRegex.test(value) ? '' : 'Please enter a valid phone number. i.e: xxx-xxx-xxxx'
-				break
-			case 'city':
-				formErrors.city = lengthValidate ? 'Minimum 3 characaters required' : ''
-				break
-			default:
-				break
-		}
+    setFormErrors({
+      [name]: error
+    })
+  }
 
-		// set error hook
-		Object.values(formErrors).forEach(error => (error.length > 0 ? setIsError(true) : setIsError(false)))
-		// set errors hook
-		setFieldError({
-			...formErrors
-		})
-	}
+  const handleSteps = step => {
+    switch (step) {
+      case 0:
+        return (
+          <FirstStep handleNext={handleNext} handleChange={handleChange} values={formValues} formErrors={formErrors} />
+        )
+      case 1:
+        return (
+          <SecondStep
+            handleNext={handleNext}
+            handleBack={handleBack}
+            handleChange={handleChange}
+            values={formValues}
+            formErrors={formErrors}
+          />
+        )
+      case 2:
+        return <Confirm handleNext={handleNext} handleBack={handleBack} values={formValues} />
+      default:
+        break
+    }
+  }
 
-	const handleSteps = step => {
-		switch (step) {
-			case 0:
-				return (
-					<FirstStep
-						handleNext={handleNext}
-						handleChange={handleChange}
-						values={fields}
-						isError={isError}
-						filedError={filedError}
-					/>
-				)
-			case 1:
-				return (
-					<SecondStep
-						handleNext={handleNext}
-						handleBack={handleBack}
-						handleChange={handleChange}
-						values={fields}
-						isError={isError}
-						filedError={filedError}
-					/>
-				)
-			case 2:
-				return <Confirm handleNext={handleNext} handleBack={handleBack} values={fields} />
-			default:
-				break
-		}
-	}
-
-	// Handle components
-	return (
-		<Fragment>
-			{steps === labels.length ? (
-				<Success />
-			) : (
-				<Fragment>
-					<Stepper activeStep={steps} style={{ paddingTop: 30, paddingBottom: 50 }} alternativeLabel>
-						{labels.map(label => (
-							<Step key={label}>
-								<StepLabel>{label}</StepLabel>
-							</Step>
-						))}
-					</Stepper>
-					{handleSteps(steps)}
-				</Fragment>
-			)}
-		</Fragment>
-	)
+  return (
+    <>
+      {activeStep === labels.length ? (
+        // Last Component
+        <Success values={formValues} />
+      ) : (
+        <>
+          <Box style={{ margin: "30px 0 50px" }}>
+            <Typography variant="h4" align="center">
+              Multi Step Form
+            </Typography>
+            <Typography variant="subtitle2" align="center" style={{ margin: "10px 0" }}>
+              React Material UI multi step form with basic form validation logic.
+            </Typography>
+          </Box>
+          <Stepper activeStep={activeStep} style={{ margin: "30px 0 15px" }} alternativeLabel>
+            {labels.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {handleSteps(activeStep)}
+        </>
+      )}
+    </>
+  )
 }
 
 export default StepForm
