@@ -11,6 +11,17 @@ import Link from "@material-ui/core/Link"
 import IconButton from "@material-ui/core/IconButton"
 import SvgIcon from "@material-ui/core/SvgIcon"
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Fork © "}
+      <Link color="inherit" href="https://github.com/awran5/react-material-ui-step-form">
+        Github
+      </Link>
+    </Typography>
+  )
+}
+
 const useStyles = makeStyles(theme => ({
   appBar: {
     position: "relative",
@@ -72,19 +83,7 @@ const App = () => {
         <Paper className={classes.paper}>
           <StepForm />
         </Paper>
-        <Divider style={{ marginTop: 100 }} />
-        <Typography component="p" align="center" style={{ margin: "10px 0", fontSize: ".75rem" }}>
-          Fork at{" "}
-          <Link
-            component="a"
-            rel="noopener noreferrer"
-            target="_blank"
-            href="https://github.com/awran5/react-material-ui-step-form"
-            title="Github Rebo"
-          >
-            Github
-          </Link>
-        </Typography>
+        <Copyright />
       </main>
     </div>
   )
