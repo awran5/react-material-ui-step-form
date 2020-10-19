@@ -4,7 +4,7 @@ React Material UI multi step form with basic form validation logic. inspired by 
 
 <hr />
 
-![screenshot](./screenshot.png)
+![screenshot](./screenshot.jpg)
 
 ### Instructions
 
