@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import { initialValues } from './Helper/initialValues'
+import { initialValues } from './helper/initialValues'
 
 const isText = RegExp(/^[A-Z ]+$/i)
 const isEmail = RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)
