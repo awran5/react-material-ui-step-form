@@ -1,4 +1,4 @@
-import { ValidationSchema } from '../Context'
+import { ValidationSchema } from './Context'
 
 export const initialValues: ValidationSchema = {
   firstName: {
