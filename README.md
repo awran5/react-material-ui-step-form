@@ -40,12 +40,12 @@ const margin = 'normal'
 - Added: eslint with [airbnb](https://www.npmjs.com/package/eslint-config-airbnb) style
 - Added: [Checkbox](https://material-ui.com/components/checkboxes/) field
 - Added: `Required` field logic
-- Imporved: Validation logic, now you can control all validaton logic inside `src/initialValues.tsx` file
+- Imporved: Validation logic, now you can control all validaton logic inside `src/helper/initialValues.tsx` file
 
 ### Example
 
 ```tsx
-// src/initialValues.tsx
+// src/helper/initialValues.tsx
 const initialValues: ValidationSchema = {
   yourFieldname: {
     value: '',                          // will be filled with field value
