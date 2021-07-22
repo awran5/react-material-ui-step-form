@@ -8,7 +8,7 @@ export const initialValues: ValidationSchema = {
     validate: 'text',
     minLength: 2,
     maxLength: 20,
-    helperText: ' kos'
+    helperText: 'Custom error message'
   },
   lastName: {
     value: '',
