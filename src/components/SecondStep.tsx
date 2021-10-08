@@ -1,22 +1,23 @@
 import React, { useCallback, useContext } from 'react'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Checkbox from '@material-ui/core/Checkbox'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormHelperText from '@mui/material/FormHelperText'
+import Checkbox from '@mui/material/Checkbox'
 import { AppContext } from '../Context'
 
 export default function SecondStep() {
   const { formValues, handleChange, handleBack, handleNext, variant, margin } = useContext(AppContext)
-  const { city, date, phone, agreement } = formValues
+  const { city, date, phone, agreenemt } = formValues
 
   const isError = useCallback(
     () =>
-      Object.keys({ city, date, phone, agreement }).some(
+      Object.keys({ city, date, phone, agreenemt }).some(
         (name) => (formValues[name].required && !formValues[name].value) || formValues[name].error
       ),
-    [formValues, city, date, phone, agreement]
+    [formValues, city, date, phone, agreenemt]
   )
 
   return (
@@ -72,26 +73,27 @@ export default function SecondStep() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={agreement.value}
+                checked={agreenemt.value}
                 onChange={handleChange}
-                name='agreement'
+                name='agreenemt'
                 color='primary'
-                required={agreement.required}
+                required={agreenemt.required}
               />
             }
             label='Agree to terms and conditions'
           />
-          <FormHelperText error={!!agreement.error}>{agreement.error}</FormHelperText>
+          <FormHelperText error={!!agreenemt.error}>{agreenemt.error}</FormHelperText>
         </Grid>
       </Grid>
-      <div style={{ display: 'flex', marginTop: 50, justifyContent: 'flex-end' }}>
-        <Button variant='contained' color='default' onClick={handleBack} style={{ marginRight: 10 }}>
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+        <Button onClick={handleBack} sx={{ mr: 1 }}>
           Back
         </Button>
         <Button variant='contained' disabled={isError()} color='primary' onClick={!isError() ? handleNext : () => null}>
           Next
         </Button>
-      </div>
+      </Box>
     </>
   )
 }

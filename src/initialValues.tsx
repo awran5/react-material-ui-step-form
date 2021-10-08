@@ -39,7 +39,7 @@ export const initialValues: ValidationSchema = {
     minLength: 3,
     maxLength: 20
   },
-  agreement: {
+  agreenemt: {
     value: false,
     error: '',
     required: true,

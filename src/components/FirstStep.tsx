@@ -1,7 +1,8 @@
 import React, { useCallback, useContext } from 'react'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 import { AppContext } from '../Context'
 
 export default function FirstStep() {
@@ -91,11 +92,18 @@ export default function FirstStep() {
           </TextField>
         </Grid>
       </Grid>
-      <div style={{ display: 'flex', marginTop: 50, justifyContent: 'flex-end' }}>
-        <Button variant='contained' disabled={isError()} color='primary' onClick={!isError() ? handleNext : () => null}>
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant='contained'
+          sx={{ mt: 3, ml: 1 }}
+          disabled={isError()}
+          color='primary'
+          onClick={!isError() ? handleNext : () => null}
+        >
           Next
         </Button>
-      </div>
+      </Box>
     </>
   )
 }

@@ -1,50 +1,32 @@
 import React from 'react'
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Paper from '@material-ui/core/Paper'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import Container from '@mui/material/Container'
+import Paper from '@mui/material/Paper'
 import StepForm from './components/StepForm'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
-import { StepsProvider } from './Context'
+/**
+ * Old Js version
+ * https://codesandbox.io/s/react-material-ui-step-form-forked-578lz
+ *
+ * Repo: https://github.com/awran5/react-material-ui-step-form
+ */
 
-const useStyles = makeStyles((theme: Theme) => ({
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(8),
-      marginBottom: theme.spacing(8),
-      padding: theme.spacing(3)
-    }
-  }
-}))
+const theme = createTheme()
 
-const App = () => {
-  const classes = useStyles()
-  return (
-    <StepsProvider>
-      <CssBaseline />
-      <Header />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <StepForm />
-        </Paper>
-        <Footer />
-      </main>
-    </StepsProvider>
-  )
-}
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Header />
+    <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
+      <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <StepForm />
+      </Paper>
+      <Footer />
+    </Container>
+  </ThemeProvider>
+)
 
 export default App

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import Stepper from '@material-ui/core/Stepper'
-import Step from '@material-ui/core/Step'
-import StepLabel from '@material-ui/core/StepLabel'
-import Typography from '@material-ui/core/Typography'
+import Box from '@mui/material/Box'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Typography from '@mui/material/Typography'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import Confirm from './Confirm'
@@ -33,15 +34,15 @@ const StepForm = () => {
         <Success />
       ) : (
         <>
-          <div style={{ margin: '30px 0 50px' }}>
+          <Box sx={{ my: 5 }}>
             <Typography variant='h4' align='center'>
               Multi Step Form
             </Typography>
-            <Typography variant='subtitle2' align='center' style={{ margin: '10px 0' }}>
+            <Typography variant='subtitle2' align='center' sx={{ mt: 2 }}>
               React Material UI multi step form with basic form validation logic.
             </Typography>
-          </div>
-          <Stepper activeStep={activeStep} style={{ margin: '30px 0 15px' }} alternativeLabel>
+          </Box>
+          <Stepper activeStep={activeStep} sx={{ py: 3 }} alternativeLabel>
             {labels.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

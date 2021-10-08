@@ -28,6 +28,7 @@ module.exports = {
     'no-console': 0,
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'no-use-before-define': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     'no-unused-vars': 'warn',
     'import/prefer-default-export': 0,
     'no-shadow': 1,

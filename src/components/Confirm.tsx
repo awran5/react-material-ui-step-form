@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import Button from '@material-ui/core/Button'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Divider from '@mui/material/Divider'
+import Button from '@mui/material/Button'
 import { AppContext } from '../Context'
 
 export default function Confirm() {
@@ -71,14 +72,14 @@ export default function Confirm() {
         </ListItem>
       </List>
 
-      <div style={{ display: 'flex', marginTop: 50, justifyContent: 'flex-end' }}>
-        <Button variant='contained' color='default' onClick={handleBack}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+        <Button sx={{ mr: 1 }} onClick={handleBack}>
           Back
         </Button>
-        <Button style={{ marginLeft: 10 }} variant='contained' color='secondary' onClick={handleSubmit}>
+        <Button variant='contained' color='success' onClick={handleSubmit}>
           Confirm & Continue
         </Button>
-      </div>
+      </Box>
     </>
   )
 }

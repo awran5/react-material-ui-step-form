@@ -16,15 +16,8 @@ git clone https://github.com/awran5/react-material-ui-step-form.git
 
 ### Dependencies
 
-- [Material-UI](https://material-ui.com/) v4.11.0 or higher
+- [Material-UI](https://material-ui.com/) v5 or higher
 - React version supports [Hooks](https://reactjs.org/docs/hooks-intro.html)
-
-### Changelog - 07/2021
-
-- Converted to Typescript
-- Update dependencies
-- Added: React Context provides to manage Components state
-- Added: Option to change all fields `variant` and `margin` that applied to [TextField](https://material-ui.com/api/text-field/)
 
 ```jsx
 /**
@@ -37,14 +30,23 @@ const variant = 'standard'
 const margin = 'normal'
 ```
 
-- Added: eslint with [airbnb](https://www.npmjs.com/package/eslint-config-airbnb) style
-- Added: [Checkbox](https://material-ui.com/components/checkboxes/) field
-- Added: `Required` field logic
-- Imporved: Validation logic, now you can control all validaton logic inside `src/initialValues.tsx` file
-
 ### Example
 
 ```tsx
+type ValidationSchema = Record<
+  string,
+  {
+    value?: any
+    error?: string
+    required?: boolean
+    validate?: 'text' | 'number' | 'email' | 'phone' | 'zip' | 'checkbox' | 'select'
+    minLength?: number
+    maxLength?: number
+    helperText?: string
+  }
+>
+
+
 // src/initialValues.tsx
 const initialValues: ValidationSchema = {
   yourFieldname: {
@@ -62,30 +64,27 @@ const initialValues: ValidationSchema = {
 }
 ```
 
-### Available properties
+### Changelog - 10/2021
 
-```tsx
-type ValidationSchema = Record<
-  string, // field name
-  {
-    value?: any
-    error?: string
-    required?: boolean
-    validate?: 'text' | 'number' | 'email' | 'phone' | 'zip' | 'checkbox' | 'select'
-    minLength?: number
-    maxLength?: number
-    helperText?: string
-  }
->
-```
+- Update: MUI v5
+- fix: minor bugs
+- style: cleaning up
 
-### Changelog - 10/2020
+### Changelog - 07/2021
 
-- Update dependencies
-- Imporved validation method
-- Fixed some bugs
-- cleaning up unnecessary code
+- Refactor: code to Typescript
+- Refactor: Validation logic, now you can control all validaton logic inside `src/initialValues.tsx` file
+- Update: app dependencies
+- Add: React Context provides to manage Components state
+- Add: Option to change all fields `variant` and `margin` that applied to [TextField](https://material-ui.com/api/text-field/)
+- Add: eslint with [airbnb](https://www.npmjs.com/package/eslint-config-airbnb) style
+- Add: [Checkbox](https://material-ui.com/components/checkboxes/) field
+- Add: `Required` field logic
 
-### [Demo](https://react-material-ui-step-form.vercel.app/)
+<br />
 
-### [codeSandbox](https://codesandbox.io/s/react-material-ui-step-form-ui788)
+### [Live Demo](https://react-material-ui-step-form.vercel.app/)
+
+<br />
+
+[![Edit react-material-ui-step-form](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/react-material-ui-step-form-ui788?fontsize=14&hidenavigation=1&theme=dark)

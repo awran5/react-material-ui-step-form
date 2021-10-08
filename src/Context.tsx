@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useReducer } from 'react'
 import { initialValues } from './initialValues'
 
 const isText = RegExp(/^[A-Z ]+$/i)
@@ -11,17 +11,13 @@ const isNumber = RegExp(/^\d+$/)
 const variant = 'standard'
 const margin = 'normal'
 
-export declare type ValidateTypes = 'text' | 'number' | 'email' | 'phone' | 'zip' | 'checkbox' | 'select'
-export declare type VariantTypes = 'outlined' | 'standard' | 'filled'
-export declare type MarginTypes = 'dense' | 'normal' | 'none'
-
 export declare type ValidationSchema = Record<
   string,
   {
     value?: any
     error?: string
     required?: boolean
-    validate?: ValidateTypes
+    validate?: 'text' | 'number' | 'email' | 'phone' | 'zip' | 'checkbox' | 'select'
     minLength?: number
     maxLength?: number
     helperText?: string
@@ -31,12 +27,11 @@ export declare type ValidationSchema = Record<
 type ContextProps = {
   activeStep: number
   formValues: ValidationSchema
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void
+  handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean) => void
   handleNext: () => void
   handleBack: () => void
-  variant: VariantTypes
-  margin: MarginTypes
+  variant: 'outlined' | 'standard' | 'filled'
+  margin: 'dense' | 'normal' | 'none'
 }
 
 export const AppContext = createContext<ContextProps>({
@@ -53,29 +48,75 @@ interface ProviderProps {
   children: React.ReactNode
 }
 
+type State = {
+  activeStep: number
+  formValues: ValidationSchema
+}
+
+type Action =
+  | { type: 'increase' }
+  | { type: 'decrease' }
+  | { type: 'form-value'; name: string; fieldValue: any }
+  | { type: 'form-error'; name: string; error: string }
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'increase':
+      return {
+        ...state,
+        activeStep: state.activeStep + 1
+      }
+    case 'decrease':
+      return {
+        ...state,
+        activeStep: state.activeStep - 1
+      }
+    case 'form-value':
+      return {
+        ...state,
+        formValues: {
+          ...state.formValues,
+          [action.name]: {
+            ...state.formValues[action.name],
+            value: action.fieldValue
+          }
+        }
+      }
+    case 'form-error':
+      return {
+        ...state,
+        formValues: {
+          ...state.formValues,
+          [action.name]: {
+            ...state.formValues[action.name],
+            error: action.error
+          }
+        }
+      }
+
+    default:
+      return state
+  }
+}
+
 export function StepsProvider({ children }: ProviderProps) {
-  const [activeStep, setActiveStep] = useState(0)
-  const [formValues, setFormValues] = useState(initialValues)
+  const [{ activeStep, formValues }, dispatch] = useReducer(reducer, {
+    activeStep: 0,
+    formValues: initialValues
+  })
 
   // Proceed to next step
-  const handleNext = () => setActiveStep((prev) => prev + 1)
+  const handleNext = () => dispatch({ type: 'increase' })
   // Go back to prev step
-  const handleBack = () => setActiveStep((prev) => prev - 1)
+  const handleBack = () => dispatch({ type: 'decrease' })
 
   // Handle form change
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean) => {
     const { type, name, value } = event.target
-    const { checked } = event.target as HTMLInputElement
 
     const fieldValue = type === 'checkbox' ? checked : value
-    // Set values
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: {
-        ...prev[name],
-        value: fieldValue
-      }
-    }))
+
+    dispatch({ type: 'form-value', name, fieldValue })
 
     const fieldName = initialValues[name]
     if (!fieldName) return
@@ -85,11 +126,8 @@ export function StepsProvider({ children }: ProviderProps) {
     let error = ''
 
     if (required && !fieldValue) error = 'This field is required'
-
     if (minLength && value && value.length < minLength) error = `Minimum ${minLength} characters is required.`
-
     if (maxLength && value && value.length > maxLength) error = 'Maximum length exceeded!'
-
     if (validate) {
       switch (validate) {
         case 'text':
@@ -126,13 +164,7 @@ export function StepsProvider({ children }: ProviderProps) {
       }
     }
 
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: {
-        ...prev[name],
-        error
-      }
-    }))
+    dispatch({ type: 'form-error', name, error })
   }
 
   return (

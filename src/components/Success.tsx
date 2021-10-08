@@ -1,26 +1,15 @@
 import React from 'react'
-import { makeStyles, Theme } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-
-const useStyles = makeStyles((theme: Theme) => ({
-  box: {
-    padding: theme.spacing(3)
-  },
-  title: {
-    marginTop: 30
-  }
-}))
+import Typography from '@mui/material/Typography'
 
 export default function Success() {
-  const classes = useStyles()
   return (
-    <div className={classes.box}>
-      <Typography variant='h2' align='center'>
+    <>
+      <Typography variant='h2' align='center' sx={{ py: 4 }}>
         Thank you!
       </Typography>
-      <Typography component='p' align='center' className={classes.title}>
+      <Typography component='p' align='center'>
         You will get an email with further instructions
       </Typography>
-    </div>
+    </>
   )
 }
