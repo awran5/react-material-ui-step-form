@@ -20,14 +20,9 @@ git clone https://github.com/awran5/react-material-ui-step-form.git
 - React version supports [Hooks](https://reactjs.org/docs/hooks-intro.html)
 
 ```jsx
-/**
- * src/Context.tsx
- *
- * Variant: `filled` | `outlined` | `standard`
- * Margin: `dense` | `none` | `normal`
- */
-const variant = 'standard'
-const margin = 'normal'
+// src/Context.tsx
+const variant = 'standard' // `filled` | `outlined` | `standard`
+const margin = 'normal' // `dense` | `none` | `normal`
 ```
 
 ### Example
@@ -53,10 +48,10 @@ const initialValues: ValidationSchema = {
     value: '',                          // will be filled with field value
     error: '',                          // will be filled with error message
     required: true,                     // if `false` field will be still validated but will not enable the `next` button
-    validate: 'text',                   // field validation logic (see types below)
+    validate: 'text',                   // field validation logic (see types above)
     minLength: 2,                       // validate min length
     maxLength: 20,                      // validate max length
-    helperText: 'custom error message'  // change the default error message (applied to `validate` methods only)
+    helperText: 'custom error message'  // change the default error message (applied to `validate` types only)
   },
   {
     // another field
