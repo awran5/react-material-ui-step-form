@@ -25,7 +25,7 @@ const handleSteps = (step: number) => {
   }
 }
 
-const StepForm = () => {
+export default function StepForm() {
   const { activeStep } = useContext(AppContext)
 
   return (
@@ -56,5 +56,3 @@ const StepForm = () => {
     </>
   )
 }
-
-export default StepForm

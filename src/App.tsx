@@ -16,17 +16,17 @@ import Footer from './components/Footer'
 
 const theme = createTheme()
 
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Header />
-    <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
-      <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        <StepForm />
-      </Paper>
-      <Footer />
-    </Container>
-  </ThemeProvider>
-)
-
-export default App
+export default function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header />
+      <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
+        <Paper variant='outlined' sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <StepForm />
+        </Paper>
+        <Footer />
+      </Container>
+    </ThemeProvider>
+  )
+}
