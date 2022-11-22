@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -6,7 +6,7 @@ import Link from '@mui/material/Link'
 import IconButton from '@mui/material/IconButton'
 import SvgIcon from '@mui/material/SvgIcon'
 
-export default function Header() {
+function Header() {
   return (
     <AppBar position='static'>
       <Toolbar>
@@ -31,3 +31,5 @@ export default function Header() {
     </AppBar>
   )
 }
+
+export default memo(Header)

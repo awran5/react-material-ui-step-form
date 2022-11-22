@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { memo } from 'react'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 
-export default function Footer() {
+function Footer() {
   return (
     <Typography variant='body2' color='textSecondary' align='center'>
       {'Fork © '}
@@ -12,3 +12,5 @@ export default function Footer() {
     </Typography>
   )
 }
+
+export default memo(Footer)
