@@ -1,15 +1,19 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useCallback, useMemo, useReducer } from 'react'
 import { initialValues } from './initialValues'
 
-const isText = RegExp(/^[A-Z ]+$/i)
-const isEmail = RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)
-const isPhone = RegExp(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/) // us
-const isZip = RegExp(/^[0-9]{5}([- /]?[0-9]{4})?$/) // us
-const isNumber = RegExp(/^\d+$/)
+const isText = /^[A-Z ]+$/i
+const isEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+const isPhone = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/ // us
+const isZip = /^[0-9]{5}([- /]?[0-9]{4})?$/ // us
+const isNumber = /^\d+$/
 
 // Applied to all fields
-const variant = 'standard'
-const margin = 'normal'
+
+type Variant = 'outlined' | 'standard' | 'filled'
+type Margin = 'dense' | 'normal' | 'none'
+
+const variant: Variant = 'standard'
+const margin: Margin = 'normal'
 
 export declare type ValidationSchema = Record<
   string,
@@ -27,11 +31,12 @@ export declare type ValidationSchema = Record<
 type ContextProps = {
   activeStep: number
   formValues: ValidationSchema
-  handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean) => void
-  handleNext: () => void
-  handleBack: () => void
-  variant: 'outlined' | 'standard' | 'filled'
-  margin: 'dense' | 'normal' | 'none'
+  // eslint-disable-next-line no-unused-vars
+  handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean): void
+  handleNext(): void
+  handleBack(): void
+  variant: Variant
+  margin: Margin
 }
 
 export const AppContext = createContext<ContextProps>({
@@ -106,69 +111,85 @@ export function StepsProvider({ children }: ProviderProps) {
   })
 
   // Proceed to next step
-  const handleNext = () => dispatch({ type: 'increase' })
+  const handleNext = useCallback(() => dispatch({ type: 'increase' }), [])
   // Go back to prev step
-  const handleBack = () => dispatch({ type: 'decrease' })
+  const handleBack = useCallback(() => dispatch({ type: 'decrease' }), [])
 
   // Handle form change
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean) => {
-    const { type, name, value } = event.target
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, checked?: boolean) => {
+      const { type, name, value } = event.target
 
-    const fieldValue = type === 'checkbox' ? checked : value
+      const fieldValue = type === 'checkbox' ? checked : value
 
-    dispatch({ type: 'form-value', name, fieldValue })
+      dispatch({ type: 'form-value', name, fieldValue })
 
-    const fieldName = initialValues[name]
-    if (!fieldName) return
+      const fieldName = initialValues[name]
+      if (!fieldName) return
 
-    const { required, validate, minLength, maxLength, helperText } = fieldName
+      const { required, validate, minLength, maxLength, helperText } = fieldName
 
-    let error = ''
+      let error = ''
 
-    if (required && !fieldValue) error = 'This field is required'
-    if (minLength && value && value.length < minLength) error = `Minimum ${minLength} characters is required.`
-    if (maxLength && value && value.length > maxLength) error = 'Maximum length exceeded!'
-    if (validate) {
-      switch (validate) {
-        case 'text':
-          if (value && !isText.test(value)) error = helperText || 'This field accepts text only.'
-          break
+      if (required && !fieldValue) error = 'This field is required'
+      if (minLength && value && value.length < minLength) error = `Minimum ${minLength} characters is required.`
+      if (maxLength && value && value.length > maxLength) error = 'Maximum length exceeded!'
+      if (validate) {
+        switch (validate) {
+          case 'text':
+            if (value && !isText.test(value)) error = helperText || 'This field accepts text only.'
+            break
 
-        case 'number':
-          if (value && !isNumber.test(value)) error = helperText || 'This field accepts numbers only.'
-          break
+          case 'number':
+            if (value && !isNumber.test(value)) error = helperText || 'This field accepts numbers only.'
+            break
 
-        case 'email':
-          if (value && !isEmail.test(value)) error = helperText || 'Please enter a valid email address.'
-          break
+          case 'email':
+            if (value && !isEmail.test(value)) error = helperText || 'Please enter a valid email address.'
+            break
 
-        case 'phone':
-          if (value && !isPhone.test(value))
-            error = helperText || 'Please enter a valid phone number. i.e: xxx-xxx-xxxx'
-          break
+          case 'phone':
+            if (value && !isPhone.test(value))
+              error = helperText || 'Please enter a valid phone number. i.e: xxx-xxx-xxxx'
+            break
 
-        case 'zip':
-          if (value && !isZip.test(value)) error = helperText || 'Please enter a valid zip code.'
-          break
+          case 'zip':
+            if (value && !isZip.test(value)) error = helperText || 'Please enter a valid zip code.'
+            break
 
-        case 'checkbox':
-          if (!checked) error = helperText || 'Please provide a valid value.'
-          break
+          case 'checkbox':
+            if (!checked) error = helperText || 'Please provide a valid value.'
+            break
 
-        case 'select':
-          if (!value) error = helperText || 'Please select a value.'
-          break
+          case 'select':
+            if (!value) error = helperText || 'Please select a value.'
+            break
 
-        default:
-          break
+          default:
+            break
+        }
       }
-    }
 
-    dispatch({ type: 'form-error', name, error })
-  }
+      dispatch({ type: 'form-error', name, error })
+    },
+    []
+  )
+
+  const constextValue = useMemo(
+    () => ({
+      activeStep,
+      formValues,
+      handleChange,
+      handleNext,
+      handleBack,
+      variant,
+      margin
+    }),
+    [activeStep, formValues, handleChange, handleNext, handleBack]
+  )
 
   return (
-    <AppContext.Provider value={{ activeStep, formValues, handleChange, handleNext, handleBack, variant, margin }}>
+    <AppContext.Provider value={constextValue}>
       <div className='mui-step-form'>{children}</div>
     </AppContext.Provider>
   )
