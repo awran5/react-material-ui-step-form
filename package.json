@@ -1,6 +1,6 @@
 {
 	"name": "react-material-ui-step-form",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "React Material UI multi step form with basic form validation logic.",
 	"author": "awran5 <awran5@yahoo.com>",
 	"license": "MIT",
