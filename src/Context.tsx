@@ -175,7 +175,7 @@ export function StepsProvider({ children }: ProviderProps) {
     []
   )
 
-  const constextValue = useMemo(
+  const contextValue = useMemo(
     () => ({
       activeStep,
       formValues,
@@ -189,7 +189,7 @@ export function StepsProvider({ children }: ProviderProps) {
   )
 
   return (
-    <AppContext.Provider value={constextValue}>
+    <AppContext.Provider value={contextValue}>
       <div className='mui-step-form'>{children}</div>
     </AppContext.Provider>
   )
