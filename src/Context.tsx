@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useMemo, useReducer } from 'react'
 import { initialValues } from './initialValues'
 
 const isText = /^[A-Z ]+$/i
-const isEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+const isEmail = /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/
 const isPhone = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4,6})$/ // us
 const isZip = /^[0-9]{5}([- /]?[0-9]{4})?$/ // us
 const isNumber = /^\d+$/
@@ -175,7 +175,7 @@ export function StepsProvider({ children }: ProviderProps) {
     []
   )
 
-  const constextValue = useMemo(
+  const contextValue = useMemo(
     () => ({
       activeStep,
       formValues,
@@ -189,7 +189,7 @@ export function StepsProvider({ children }: ProviderProps) {
   )
 
   return (
-    <AppContext.Provider value={constextValue}>
+    <AppContext.Provider value={contextValue}>
       <div className='mui-step-form'>{children}</div>
     </AppContext.Provider>
   )

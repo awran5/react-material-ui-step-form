@@ -10,14 +10,14 @@ import { AppContext } from '../Context'
 
 export default function SecondStep() {
   const { formValues, handleChange, handleBack, handleNext, variant, margin } = useContext(AppContext)
-  const { city, date, phone, agreenemt } = formValues
+  const { city, date, phone, agreement } = formValues
 
   const isError = useCallback(
     () =>
-      Object.keys({ city, date, phone, agreenemt }).some(
+      Object.keys({ city, date, phone, agreement }).some(
         (name) => (formValues[name].required && !formValues[name].value) || formValues[name].error
       ),
-    [formValues, city, date, phone, agreenemt]
+    [formValues, city, date, phone, agreement]
   )
 
   return (
@@ -73,16 +73,16 @@ export default function SecondStep() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={agreenemt.value}
+                checked={agreement.value}
                 onChange={handleChange}
-                name='agreenemt'
+                name='agreement'
                 color='primary'
-                required={agreenemt.required}
+                required={agreement.required}
               />
             }
             label='Agree to terms and conditions'
           />
-          <FormHelperText error={!!agreenemt.error}>{agreenemt.error}</FormHelperText>
+          <FormHelperText error={!!agreement.error}>{agreement.error}</FormHelperText>
         </Grid>
       </Grid>
 
